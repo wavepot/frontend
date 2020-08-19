@@ -1,0 +1,6 @@
+[submodule "dsp"]
+	path = dsp
+	url = git@github.com:wavepot/dsp.git
+[submodule "editor"]
+	path = editor
+	url = git@github.com:wavepot/editor.git
