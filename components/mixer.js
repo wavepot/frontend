@@ -41,8 +41,8 @@ export default class Mixer {
     this.ctx = this.canvas.getContext('2d')
     this.resize()
     this.ctx.scale(pixelRatio, pixelRatio)
-    this.ctx.fillStyle = '#000'
-    this.ctx.fillRect(0, 0, this.width, this.height)
+    // this.ctx.fillStyle = 'rgba(0,0,0,.5)'
+    // this.ctx.fillRect(0, 0, this.width, this.height)
     this.ctx.textBaseline = 'top'
     this.faders.forEach((_, i) => this.drawFader(i))
     this.registerEvents()
@@ -57,6 +57,7 @@ export default class Mixer {
   updateFader (i) {
     let y = (settings.height + 2) * i
     let w = this.width
+    let off = 8.1
 
     const gradient = this.ctx.createLinearGradient(0, 0, this.width, 0)
     gradient.addColorStop(.7, settings.colors[0])
@@ -64,16 +65,17 @@ export default class Mixer {
     gradient.addColorStop(.96, settings.colors[2])
 
     this.ctx.fillStyle = '#1f1f2f'
-    this.ctx.fillRect(w/2, y+3, w/2-4, settings.height - 6)
+    this.ctx.fillRect(w/2+off, y+3, w/2-4-off, settings.height - 6)
     this.ctx.fillStyle = this.faders[i].mute ? settings.muteColor : gradient //settings.color(this.faders[i].vol*.8+.2)
-    let r = ( (w/2-8) * (this.faders[i].vol) )
-    this.ctx.fillRect(w/2+2, y+5, r, settings.height - 10)
+    let r = ( (w/2-8-off) * (this.faders[i].vol) )
+    this.ctx.fillRect(w/2+2+off, y+5, r, settings.height - 10)
   }
 
   drawFader (i) {
     let y = (settings.height + 2) * i
     let w = this.width
-    this.ctx.fillStyle = '#000'
+    let off = 8.1
+    this.ctx.fillStyle = 'rgba(0,0,0,.5)'
     this.ctx.fillRect(0, y, w, settings.height)
     this.updateFader(i)
     // ctx.fillStyle = '#f00'
@@ -85,9 +87,9 @@ export default class Mixer {
     this.ctx.fillText(i, 5, y + 6)
 
     this.ctx.fillStyle = settings.colors[this.faders[i].X ? 1 : 0]
-    this.ctx.fillText('X', 119, y + 6)
+    this.ctx.fillText('X', 119+off, y + 6)
     this.ctx.fillStyle = settings.colors[this.faders[i].Y ? 1 : 0]
-    this.ctx.fillText('Y', 129, y + 6)
+    this.ctx.fillText('Y', 129+off, y + 6)
 
     this.ctx.font = '6.5pt mono' //sans serif'
     this.ctx.fillStyle = '#aaf'
@@ -96,7 +98,7 @@ export default class Mixer {
     // ctx.fillText('M', x + 21, 7 + h)
     this.ctx.beginPath()
     this.ctx.fillStyle = settings.colors[this.faders[i].mute ? 2 : 1]
-    this.ctx.arc(w/2 - 8, y + settings.height/2, 1.9, 0, 2*Math.PI)
+    this.ctx.arc(w/2 - 8+off, y + settings.height/2, 1.9, 0, 2*Math.PI)
     this.ctx.fill()
   }
 
@@ -105,8 +107,9 @@ export default class Mixer {
     let strategy
 
     const get = e => {
-      const { x, y } = relativeMouseCoords(this.canvas, e)
+      let { x, y } = relativeMouseCoords(this.canvas, e)
       const i = Math.ceil(y / pixelRatio / (settings.height + 2)) - 1
+      x -= 8.1*2
       return { x, y, i }
     }
 

@@ -5,6 +5,7 @@ import Audio from './components/audio.js'
 import Mix from './dsp/src/mix.js'
 import mixBuffers from './dsp/src/mix-buffers.js'
 import DynamicCache from './dsp/dynamic-cache.js'
+import './dsp/src/global-service.js'
 import * as API from './components/api.js'
 
 const cache = new DynamicCache('projects', {
@@ -46,7 +47,9 @@ const renderWaveform = async title => {
   const output = Array(2).fill(0).map(() =>
     new Shared32Array(bufferSize))
 
-  const tracks = json.tracks.map(track => {
+  const tracks = json.tracks
+    .filter(track => !track.title.endsWith('shader.js'))
+    .map(track => {
     track.buffer = Array(2).fill(0).map(() =>
       new Shared32Array(bufferSize))
     track.context = {
