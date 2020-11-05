@@ -5,3 +5,6 @@
 [submodule "shader"]
 	path = shader
 	url = git@github.com:wavepot/shader.git
+[submodule "sound"]
+	path = sound
+	url = git@github.com:wavepot/sound.git
