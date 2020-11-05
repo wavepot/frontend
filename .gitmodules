@@ -6,3 +6,6 @@
 	path = editor
 	url = git@github.com:wavepot/editor.git
 	branch = master
+[submodule "shader"]
+	path = shader
+	url = git@github.com:wavepot/shader.git
